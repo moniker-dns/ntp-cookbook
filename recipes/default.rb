@@ -41,6 +41,14 @@ cookbook_file node['ntp']['leapfile'] do
   mode 0644
 end
 
+cookbook_file '/etc/default/ntp' do
+  source 'ntp.default'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :restart, "service[#{node['ntp']['service']}]"
+end
+
 template "/etc/ntp.conf" do
   source "ntp.conf.erb"
   owner node['ntp']['conf_owner']
